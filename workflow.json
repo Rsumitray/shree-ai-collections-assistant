@@ -1,18 +1,21 @@
 {
-  "name": "Shree - AI Collections Assistant",
+  "name": "shreeAI",
   "nodes": [
     {
       "parameters": {
         "public": true,
-        "initialMessages": "Hello \n\nI'm Shree, ready to help you with collection.\nYou can ask anything related to your Disposition/RC or Collection.",
+        "initialMessages": "Hello \n\nI'm Shree, ready to help you about collection.\nYou can ask anything related to you Disposition/RC or Collection.",
         "options": {
           "subtitle": "Your AI Collection Assistant",
-          "title": "Shree 🤖"
+          "title": "Shree"
         }
       },
       "type": "@n8n/n8n-nodes-langchain.chatTrigger",
       "typeVersion": 1.5,
-      "position": [-304, -16],
+      "position": [
+        -304,
+        -16
+      ],
       "id": "401faabe-e8ac-413b-a200-ea3a3d0fff15",
       "name": "When chat message received",
       "webhookId": "REPLACE_WITH_YOUR_OWN_WEBHOOK_ID"
@@ -22,24 +25,29 @@
         "options": {}
       },
       "type": "@n8n/n8n-nodes-langchain.agent",
-      "typeVersion": 1.7,
-      "position": [-64, -16],
-      "id": "PLACEHOLDER-AI-AGENT",
+      "typeVersion": 3.1,
+      "position": [
+        -32,
+        -48
+      ],
+      "id": "549ec234-7827-45c7-b7f0-bf374dd15ab0",
       "name": "AI Agent"
     },
     {
       "parameters": {
-        "model": "qwen-plus",
         "options": {}
       },
-      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "type": "@n8n/n8n-nodes-langchain.lmChatAlibabaCloud",
       "typeVersion": 1,
-      "position": [-160, 160],
-      "id": "PLACEHOLDER-CHAT-MODEL",
+      "position": [
+        -96,
+        208
+      ],
+      "id": "cc98696e-4215-416b-83db-a17bc82494d3",
       "name": "Qwen Cloud Chat Model",
       "credentials": {
-        "openAiApi": {
-          "id": "REPLACE_WITH_YOUR_CREDENTIAL_ID",
+        "alibabaCloudApi": {
+          "id": null,
           "name": "REPLACE_WITH_YOUR_CREDENTIAL_NAME"
         }
       }
@@ -47,25 +55,43 @@
     {
       "parameters": {},
       "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
-      "typeVersion": 1.3,
-      "position": [0, 160],
-      "id": "PLACEHOLDER-MEMORY",
+      "typeVersion": 1.4,
+      "position": [
+        64,
+        208
+      ],
+      "id": "4f1cabb3-b25c-4feb-901b-c05d7c88b6bb",
       "name": "Simple Memory"
     },
     {
       "parameters": {
-        "toolDescription": "Retrieves collection RC codes, dispositions, and definitions from the knowledge base via RAG search",
         "method": "POST",
-        "url": "REPLACE_WITH_YOUR_RAG_ENDPOINT_URL",
+        "url": "https://prod-1-data.ke.pinecone.io/assistant/chat/shree",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Api-Key",
+              "value": "REPLACE_WITH_YOUR_PINECONE_API_KEY"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"messages\": [\n    {\n      \"role\": \"user\",\n      \"content\": \"{{ $json.chatInput }}\"\n    }\n  ],\n  \"stream\": false,\n  \"model\": \"gpt-4o\"\n}",
         "options": {}
       },
       "type": "n8n-nodes-base.httpRequestTool",
-      "typeVersion": 4.2,
-      "position": [220, 160],
-      "id": "PLACEHOLDER-RAG-TOOL",
+      "typeVersion": 4.5,
+      "position": [
+        240,
+        176
+      ],
+      "id": "79c006a1-1d8b-4cca-b872-02ba66b0bafb",
       "name": "Collection Knowledge RAG"
     }
   ],
+  "pinData": {},
   "connections": {
     "When chat message received": {
       "main": [
@@ -112,9 +138,17 @@
       ]
     }
   },
-  "pinData": {},
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "229228c2-dd0e-47dc-9609-a40ad4e2a60e",
   "meta": {
     "templateCredsSetupCompleted": true,
-    "instanceId": "REPLACE_WITH_YOUR_INSTANCE_ID"
-  }
+    "instanceId": "REPLACE_WITH_YOUR_OWN_INSTANCE_ID"
+  },
+  "nodeGroups": [],
+  "id": "Uccg9kPgYS9w6X1Y",
+  "tags": []
 }
